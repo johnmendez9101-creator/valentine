@@ -1,292 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Will You Be My Valentine? 💖</title>
+  <meta charset="UTF-8">
+  <title>For You ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <!-- Cursive but readable font -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
-<style>
-* { box-sizing: border-box; }
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Pacifico', cursive;
+      overflow: hidden;
+    }
 
-body {
-  margin: 0;
-  overflow: hidden;
-  font-family: 'Pacifico', cursive;
-  background: linear-gradient(to top, #ffdde1, #fbc2eb);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: relative;
-}
+    h1 {
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
 
-h1 {
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  color: #fff;
-  text-shadow: 2px 2px 5px #ff5e78;
-  animation: pulse 1.6s infinite;
-  text-align: center;
-  z-index: 10;
-}
+    #musicBtn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      z-index: 3;
+    }
 
-@keyframes pulse {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-}
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 60px;
+      height: 80px;
+      background: red;
+      border-radius: 50% 50% 45% 45%;
+      cursor: pointer;
+      animation: floatUp 8s linear infinite;
+    }
 
-.buttons {
-  margin-top: 25px;
-  z-index: 10;
-}
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #555;
+      transform: translateX(-50%);
+    }
 
-button {
-  padding: 0.9em 1.8em;
-  font-size: 1.3em;
-  border: none;
-  border-radius: 16px;
-  margin: 10px;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-button:hover { transform: scale(1.08); }
-
-#yes {
-  background: #ff5e78;
-  color: #fff;
-}
-
-#no {
-  background: #fff;
-  color: #ff5e78;
-  position: relative;
-}
-
-.popup {
-  position: fixed;
-  inset: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.25);
-  z-index: 20;
-}
-
-.popup-content {
-  background: rgba(255,255,255,0.96);
-  color: #ff5e78;
-  padding: 2em;
-  border-radius: 22px;
-  max-width: 420px;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(0,0,0,0.35);
-}
-
-.popup-content p {
-  max-height: 240px;
-  overflow-y: auto;
-  font-size: 1.1em;
-}
-
-.heart, .balloon {
-  position: absolute;
-  user-select: none;
-  animation: floatUp linear forwards;
-  z-index: 5;
-}
-
-@keyframes floatUp {
-  from { transform: translateY(0) rotate(0deg); opacity: 1; }
-  to   { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-}
-
-#score {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  font-size: 1.3em;
-  color: #fff;
-  text-shadow: 1px 1px 3px #ff5e78;
-  z-index: 30;
-}
-
-#musicBtn {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  font-size: 1.4em;
-  cursor: pointer;
-  background: rgba(255,255,255,0.8);
-  z-index: 30;
-}
-
-#loveMsg {
-  position: fixed;
-  bottom: 18px;
-  width: 100%;
-  text-align: center;
-  font-size: 1.4em;
-  color: #fff;
-  text-shadow: 1px 1px 3px #ff5e78;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  z-index: 40;
-}
-</style>
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<h1>Will You Be My Valentine? 💕</h1>
+  <h1>You make my heart float 🎈</h1>
 
-<div class="buttons">
-  <button id="yes">Yes 💖</button>
-  <button id="no">No 😢</button>
-</div>
+  <button id="musicBtn">🎵</button>
 
-<div id="score">Score: 0</div>
-<div id="loveMsg"></div>
+  <!-- Background music -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+  </audio>
 
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <h2>Yay! 💘</h2>
-    <p>
-      From the moment we talked, everything felt like it was gently falling into place.
-      Every laugh, every moment, every little lesson somehow led me right here — with you.
-      <br><br>
-      Every heart you catch is a piece of love meant only for you,
-      and every balloon carries a reminder of how special you are to me. 🌹
-    </p>
-  </div>
-</div>
+  <!-- Pop sound -->
+  <audio id="popSound" preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2c58c5b6e4.mp3" type="audio/mpeg">
+  </audio>
 
-<button id="musicBtn">🎵</button>
+  <script>
+    const bgMusic = document.getElementById('bgMusic');
+    const popSound = document.getElementById('popSound');
+    const musicBtn = document.getElementById('musicBtn');
 
-<audio id="bgMusic" loop preload="auto">
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-</audio>
+    bgMusic.volume = 0.6;
+    popSound.volume = 1.0;
 
-<script>
-const yesBtn = document.getElementById('yes');
-const noBtn = document.getElementById('no');
-const popup = document.getElementById('popup');
-const musicBtn = document.getElementById('musicBtn');
-const bgMusic = document.getElementById('bgMusic');
-const scoreDisplay = document.getElementById('score');
-const loveMsg = document.getElementById('loveMsg');
+    let musicUnlocked = false;
 
-let score = 0;
-const targetScore = 20;
-let musicStarted = false;
+    function unlockMusic() {
+      if (!musicUnlocked) {
+        bgMusic.play().catch(()=>{});
+        musicBtn.textContent = "🔊";
+        musicUnlocked = true;
+      }
+    }
 
-const messages = [
-  "You make my heart race 💕",
-  "You are my favorite thought 😊",
-  "Life feels brighter with you in it ❤️",
-  "Every moment with you matters 💖",
-  "You feel like home 💌",
-  "I’m so grateful for you 💝",
-  "It all started with a bookmark 🔖"
-];
+    document.addEventListener('click', unlockMusic, { once: true });
+    document.addEventListener('touchstart', unlockMusic, { once: true });
+    document.addEventListener('keydown', unlockMusic, { once: true });
 
-bgMusic.volume = 0.7;
+    musicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (bgMusic.paused) {
+        bgMusic.play().catch(()=>{});
+        musicBtn.textContent = "🔊";
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "🎵";
+      }
+    });
 
-/* Music toggle */
-musicBtn.addEventListener('click', () => {
-  if (bgMusic.paused) {
-    bgMusic.play().catch(()=>{});
-    musicBtn.textContent = "🔈";
-  } else {
-    bgMusic.pause();
-    musicBtn.textContent = "🎵";
-  }
-});
+    function createBalloon() {
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
 
-/* First interaction unlocks audio */
-document.body.addEventListener('pointerdown', () => {
-  if (!musicStarted) {
-    bgMusic.play().catch(()=>{});
-    musicBtn.textContent = "🔈";
-    musicStarted = true;
-  }
-}, { once: true });
+      const colors = ['#ff4d6d', '#ffafcc', '#cdb4db', '#a2d2ff', '#ffc8dd'];
+      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-/* Yes button */
-yesBtn.addEventListener('click', () => {
-  popup.style.display = 'flex';
-  spawnHearts(25);
-});
+      balloon.style.left = Math.random() * 90 + 'vw';
+      balloon.style.animationDuration = (6 + Math.random() * 4) + 's';
 
-/* No button dodge (mouse + touch) */
-function dodgeNo() {
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-  noBtn.style.position = 'absolute';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-}
-noBtn.addEventListener('mouseenter', dodgeNo);
-noBtn.addEventListener('touchstart', dodgeNo);
+      balloon.addEventListener('click', () => {
+        popSound.currentTime = 0;
+        popSound.play().catch(()=>{});
+        balloon.remove();
+      });
 
-/* Hearts */
-function spawnHearts(n) {
-  for (let i = 0; i < n; i++) createHeart();
-}
+      document.body.appendChild(balloon);
 
-function createHeart() {
-  const heart = document.createElement('div');
-  heart.className = 'heart';
-  heart.textContent = Math.random() < 0.12 ? '💛' : '💖';
-  heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.fontSize = (20 + Math.random() * 28) + 'px';
-  heart.style.animationDuration = (4 + Math.random() * 4) + 's';
-  document.body.appendChild(heart);
+      setTimeout(() => balloon.remove(), 10000);
+    }
 
-  heart.addEventListener('click', () => {
-    score += heart.textContent === '💛' ? 5 : 1;
-    scoreDisplay.textContent = 'Score: ' + score;
-    heart.remove();
-    if (score >= targetScore) popup.style.display = 'flex';
-  });
-
-  setTimeout(() => heart.remove(), 8000);
-}
-
-/* Balloons */
-setInterval(() => {
-  const balloon = document.createElement('div');
-  balloon.className = 'balloon';
-  balloon.textContent = '🎈';
-  balloon.style.left = Math.random() * 100 + 'vw';
-  balloon.style.fontSize = (30 + Math.random() * 30) + 'px';
-  balloon.style.animationDuration = (6 + Math.random() * 5) + 's';
-  document.body.appendChild(balloon);
-
-  balloon.addEventListener('click', () => {
-    score++;
-    scoreDisplay.textContent = 'Score: ' + score;
-    showMessage();
-    balloon.remove();
-  });
-
-  setTimeout(() => balloon.remove(), 11000);
-}, 1300);
-
-function showMessage() {
-  loveMsg.textContent = messages[Math.floor(Math.random() * messages.length)];
-  loveMsg.style.opacity = 1;
-  setTimeout(() => loveMsg.style.opacity = 0, 2200);
-}
-</script>
+    setInterval(createBalloon, 800);
+  </script>
 
 </body>
 </html>
+
