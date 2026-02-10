@@ -1,152 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>For You ❤️</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Will You Be My Valentine? 💙</title>
 
-  <!-- Cursive but readable font -->
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Pacifico', cursive;
-      overflow: hidden;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    h1 {
-      font-size: 3rem;
-      color: #fff;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-      z-index: 2;
-    }
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to top, #cfd9ff, #a1c4fd);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
 
-    #musicBtn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      font-size: 1.5rem;
-      background: rgba(255,255,255,0.8);
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      z-index: 3;
-    }
+h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: #ffffff;
+  text-shadow: 2px 2px 6px #4a6cf7;
+  animation: pulse 1.6s infinite;
+  text-align: center;
+  z-index: 10;
+}
 
-    .balloon {
-      position: absolute;
-      bottom: -100px;
-      width: 60px;
-      height: 80px;
-      background: red;
-      border-radius: 50% 50% 45% 45%;
-      cursor: pointer;
-      animation: floatUp 8s linear infinite;
-    }
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
 
-    .balloon::after {
-      content: '';
-      position: absolute;
-      bottom: -20px;
-      left: 50%;
-      width: 2px;
-      height: 20px;
-      background: #555;
-      transform: translateX(-50%);
-    }
+.buttons {
+  margin-top: 20px;
+  z-index: 10;
+}
 
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-120vh);
-        opacity: 0;
-      }
-    }
-  </style>
+button {
+  padding: 0.8em 1.7em;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 14px;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+button:hover { transform: scale(1.07); }
+
+#yes {
+  background: #4a6cf7;
+  color: #fff;
+}
+
+#no {
+  background: #ffffff;
+  color: #4a6cf7;
+  position: relative;
+}
+
+.popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.25);
+  z-index: 20;
+}
+
+.popup-content {
+  background: rgba(255,255,255,0.96);
+  color: #4a6cf7;
+  padding: 2em;
+  border-radius: 22px;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0,0,0,0.35);
+}
+
+.popup-content img {
+  width: 120px;
+  margin-bottom: 10px;
+}
+
+.heart, .balloon {
+  position: absolute;
+  user-select: none;
+  animation: floatUp linear forwards;
+  z-index: 5;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(-110vh); opacity: 0; }
+}
+
+#score {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  font-size: 1.2em;
+  color: #fff;
+  text-shadow: 1px 1px 3px #4a6cf7;
+  z-index: 30;
+}
+
+#musicBtn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.4em;
+  cursor: pointer;
+  background: rgba(255,255,255,0.8);
+  z-index: 30;
+}
+
+#loveMsg {
+  position: fixed;
+  bottom: 18px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.3em;
+  color: #fff;
+  text-shadow: 1px 1px 3px #4a6cf7;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 40;
+}
+
+/* Cute floating GIF */
+.floating-gif {
+  position: absolute;
+  bottom: -120px;
+  width: 90px;
+  animation: floatUp 10s linear forwards;
+}
+</style>
 </head>
+
 <body>
 
-  <h1>You make my heart float 🎈</h1>
+<h1>Will You Be My Valentine? 💙</h1>
 
-  <button id="musicBtn">🎵</button>
+<div class="buttons">
+  <button id="yes">Yes 💙</button>
+  <button id="no">No 🥺</button>
+</div>
 
-  <!-- Background music -->
-  <audio id="bgMusic" loop preload="auto">
-    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-  </audio>
+<div id="score">Score: 0</div>
+<div id="loveMsg"></div>
 
-  <!-- Pop sound -->
-  <audio id="popSound" preload="auto">
-    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2c58c5b6e4.mp3" type="audio/mpeg">
-  </audio>
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2t5aHRrZHNxNGp5bHhnM3k2ZjRwa3F3NHV0b2FtdXU1Z3k3Y2I0NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0MYt5jPR6QX5pnqM/giphy.gif" alt="cute gif">
+    <h2>Yay! 💙</h2>
+    <p>
+      Somehow, every little moment led me right here — choosing you.
+      You make life softer, brighter, and a whole lot sweeter.
+    </p>
+  </div>
+</div>
 
-  <script>
-    const bgMusic = document.getElementById('bgMusic');
-    const popSound = document.getElementById('popSound');
-    const musicBtn = document.getElementById('musicBtn');
+<button id="musicBtn">🎵</button>
 
-    bgMusic.volume = 0.6;
-    popSound.volume = 1.0;
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
 
-    let musicUnlocked = false;
+<script>
+const yesBtn = document.getElementById('yes');
+const noBtn = document.getElementById('no');
+const popup = document.getElementById('popup');
+const musicBtn = document.getElementById('musicBtn');
+const bgMusic = document.getElementById('bgMusic');
+const scoreDisplay = document.getElementById('score');
+const loveMsg = document.getElementById('loveMsg');
 
-    function unlockMusic() {
-      if (!musicUnlocked) {
-        bgMusic.play().catch(()=>{});
-        musicBtn.textContent = "🔊";
-        musicUnlocked = true;
-      }
-    }
+let score = 0;
+let musicStarted = false;
 
-    document.addEventListener('click', unlockMusic, { once: true });
-    document.addEventListener('touchstart', unlockMusic, { once: true });
-    document.addEventListener('keydown', unlockMusic, { once: true });
+const messages = [
+  "You make my days better 💙",
+  "I smile because of you 😊",
+  "You feel like home 🏡",
+  "Life is sweeter with you 💫",
+  "You’re my favorite person 💌"
+];
 
-    musicBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (bgMusic.paused) {
-        bgMusic.play().catch(()=>{});
-        musicBtn.textContent = "🔊";
-      } else {
-        bgMusic.pause();
-        musicBtn.textContent = "🎵";
-      }
-    });
+bgMusic.volume = 0.7;
 
-    function createBalloon() {
-      const balloon = document.createElement('div');
-      balloon.className = 'balloon';
+musicBtn.addEventListener('click', () => {
+  if (bgMusic.paused) {
+    bgMusic.play().catch(()=>{});
+    musicBtn.textContent = "🔊";
+  } else {
+    bgMusic.pause();
+    musicBtn.textContent = "🎵";
+  }
+});
 
-      const colors = ['#ff4d6d', '#ffafcc', '#cdb4db', '#a2d2ff', '#ffc8dd'];
-      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+document.body.addEventListener('pointerdown', () => {
+  if (!musicStarted) {
+    bgMusic.play().catch(()=>{});
+    musicStarted = true;
+  }
+}, { once: true });
 
-      balloon.style.left = Math.random() * 90 + 'vw';
-      balloon.style.animationDuration = (6 + Math.random() * 4) + 's';
+yesBtn.addEventListener('click', () => {
+  popup.style.display = 'flex';
+  spawnGif();
+});
 
-      balloon.addEventListener('click', () => {
-        popSound.currentTime = 0;
-        popSound.play().catch(()=>{});
-        balloon.remove();
-      });
+function dodgeNo() {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
+}
+noBtn.addEventListener('mouseenter', dodgeNo);
+noBtn.addEventListener('touchstart', dodgeNo);
 
-      document.body.appendChild(balloon);
+setInterval(() => {
+  const balloon = document.createElement('div');
+  balloon.className = 'balloon';
+  balloon.textContent = '💙';
+  balloon.style.left = Math.random() * 100 + 'vw';
+  balloon.style.fontSize = '32px';
+  balloon.style.animationDuration = '7s';
+  document.body.appendChild(balloon);
 
-      setTimeout(() => balloon.remove(), 10000);
-    }
+  balloon.addEventListener('click', () => {
+    score++;
+    scoreDisplay.textContent = 'Score: ' + score;
+    showMessage();
+    balloon.remove();
+  });
 
-    setInterval(createBalloon, 800);
-  </script>
+  setTimeout(() => balloon.remove(), 8000);
+}, 1400);
+
+function showMessage() {
+  loveMsg.textContent = messages[Math.floor(Math.random() * messages.length)];
+  loveMsg.style.opacity = 1;
+  setTimeout(() => loveMsg.style.opacity = 0, 2000);
+}
+
+function spawnGif() {
+  const gif = document.createElement('img');
+  gif.src = "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif";
+  gif.className = "floating-gif";
+  gif.style.left = Math.random() * 80 + 'vw';
+  document.body.appendChild(gif);
+  setTimeout(() => gif.remove(), 10000);
+}
+</script>
 
 </body>
 </html>
