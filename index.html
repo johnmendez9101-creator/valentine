@@ -1,271 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Will You Be My Valentine? 💙</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Virtual Timeline Museum</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing: border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400&display=swap');
+
+:root {
+  --blue: #0a1f44;
+  --gold: #c9a44c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  margin: 0;
-  overflow: hidden;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to top, #cfd9ff, #a1c4fd);
-  height: 100vh;
+  background: var(--blue);
+  color: #f4f4f4;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border-bottom: 1px solid var(--gold);
+}
+
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: var(--gold);
+}
+
+header p {
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+/* Timeline */
+.timeline {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: relative;
+  gap: 2rem;
+  padding: 1.5rem;
 }
 
-h1 {
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  color: #ffffff;
-  text-shadow: 2px 2px 6px #4a6cf7;
-  animation: pulse 1.6s infinite;
-  text-align: center;
-  z-index: 10;
-}
-
-@keyframes pulse {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
-
-.buttons {
-  margin-top: 20px;
-  z-index: 10;
-}
-
-button {
-  padding: 0.8em 1.7em;
-  font-size: 1.2em;
+.timeline button {
+  background: none;
   border: none;
-  border-radius: 14px;
-  margin: 10px;
+  color: #bbb;
+  font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.25s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-button:hover { transform: scale(1.07); }
-
-#yes {
-  background: #4a6cf7;
-  color: #fff;
-}
-
-#no {
-  background: #ffffff;
-  color: #4a6cf7;
   position: relative;
 }
 
-.popup {
-  position: fixed;
-  inset: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.25);
-  z-index: 20;
+.timeline button.active {
+  color: var(--gold);
 }
 
-.popup-content {
-  background: rgba(255,255,255,0.96);
-  color: #4a6cf7;
-  padding: 2em;
-  border-radius: 22px;
-  max-width: 420px;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(0,0,0,0.35);
-}
-
-.popup-content img {
-  width: 120px;
-  margin-bottom: 10px;
-}
-
-.heart, .balloon {
+.timeline button::after {
+  content: '';
   position: absolute;
-  user-select: none;
-  animation: floatUp linear forwards;
-  z-index: 5;
+  bottom: -6px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: 0.4s;
 }
 
-@keyframes floatUp {
-  from { transform: translateY(0); opacity: 1; }
-  to   { transform: translateY(-110vh); opacity: 0; }
-}
-
-#score {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  font-size: 1.2em;
-  color: #fff;
-  text-shadow: 1px 1px 3px #4a6cf7;
-  z-index: 30;
-}
-
-#musicBtn {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  font-size: 1.4em;
-  cursor: pointer;
-  background: rgba(255,255,255,0.8);
-  z-index: 30;
-}
-
-#loveMsg {
-  position: fixed;
-  bottom: 18px;
+.timeline button.active::after {
   width: 100%;
-  text-align: center;
-  font-size: 1.3em;
-  color: #fff;
-  text-shadow: 1px 1px 3px #4a6cf7;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  z-index: 40;
+  left: 0;
 }
 
-/* Cute floating GIF */
-.floating-gif {
+/* Rooms */
+.rooms {
+  position: relative;
+  height: calc(100vh - 240px);
+}
+
+.room {
   position: absolute;
-  bottom: -120px;
-  width: 90px;
-  animation: floatUp 10s linear forwards;
+  inset: 0;
+  padding: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  opacity: 0;
+  transform: translateX(60px);
+  pointer-events: none;
+  transition: all 0.8s ease;
+}
+
+.room.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* Artwork Cards */
+.art {
+  position: relative;
+  border: 1px solid rgba(201,164,76,0.35);
+  overflow: hidden;
+}
+
+.art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.art:hover img {
+  transform: scale(1.08);
+}
+
+.caption {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(10,31,68,0.2),
+    rgba(10,31,68,0.95)
+  );
+  opacity: 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: opacity 0.4s ease;
+}
+
+.art:hover .caption {
+  opacity: 1;
+}
+
+.caption h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.caption p {
+  font-size: 0.9rem;
+  opacity: 0.85;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Will You Be My Valentine? 💙</h1>
+<header>
+  <h1>The Azure Timeline Museum</h1>
+  <p>Journey Through Time & Art</p>
+</header>
 
-<div class="buttons">
-  <button id="yes">Yes 💙</button>
-  <button id="no">No 🥺</button>
-</div>
+<!-- Timeline Navigation -->
+<nav class="timeline">
+  <button class="active" onclick="showRoom(0)">1800</button>
+  <button onclick="showRoom(1)">1900</button>
+  <button onclick="showRoom(2)">2000</button>
+</nav>
 
-<div id="score">Score: 0</div>
-<div id="loveMsg"></div>
+<!-- Rooms -->
+<section class="rooms">
 
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2t5aHRrZHNxNGp5bHhnM3k2ZjRwa3F3NHV0b2FtdXU1Z3k3Y2I0NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0MYt5jPR6QX5pnqM/giphy.gif" alt="cute gif">
-    <h2>Yay! 💙</h2>
-    <p>
-      Somehow, every little moment led me right here — choosing you.
-      You make life softer, brighter, and a whole lot sweeter.
-    </p>
+  <!-- Room 1 -->
+  <div class="room active">
+    <div class="art">
+      <img src="images/1800-1.jpg">
+      <div class="caption">
+        <h3>Classical Beginnings</h3>
+        <p>Oil on canvas, 1802</p>
+      </div>
+    </div>
+
+    <div class="art">
+      <img src="images/1800-2.jpg">
+      <div class="caption">
+        <h3>Golden Heritage</h3>
+        <p>Neoclassical period</p>
+      </div>
+    </div>
   </div>
-</div>
 
-<button id="musicBtn">🎵</button>
+  <!-- Room 2 -->
+  <div class="room">
+    <div class="art">
+      <img src="images/1900-1.jpg">
+      <div class="caption">
+        <h3>Industrial Visions</h3>
+        <p>Modernism, 1912</p>
+      </div>
+    </div>
 
-<audio id="bgMusic" loop preload="auto">
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-</audio>
+    <div class="art">
+      <img src="images/1900-2.jpg">
+      <div class="caption">
+        <h3>Blue Abstraction</h3>
+        <p>Post-war expression</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room 3 -->
+  <div class="room">
+    <div class="art">
+      <img src="images/2000-1.jpg">
+      <div class="caption">
+        <h3>Digital Echoes</h3>
+        <p>Mixed media, 2005</p>
+      </div>
+    </div>
+
+    <div class="art">
+      <img src="images/2000-2.jpg">
+      <div class="caption">
+        <h3>Future Relics</h3>
+        <p>Contemporary art</p>
+      </div>
+    </div>
+  </div>
+
+</section>
 
 <script>
-const yesBtn = document.getElementById('yes');
-const noBtn = document.getElementById('no');
-const popup = document.getElementById('popup');
-const musicBtn = document.getElementById('musicBtn');
-const bgMusic = document.getElementById('bgMusic');
-const scoreDisplay = document.getElementById('score');
-const loveMsg = document.getElementById('loveMsg');
+const rooms = document.querySelectorAll('.room');
+const buttons = document.querySelectorAll('.timeline button');
 
-let score = 0;
-let musicStarted = false;
-
-const messages = [
-  "You make my days better 💙",
-  "I smile because of you 😊",
-  "You feel like home 🏡",
-  "Life is sweeter with you 💫",
-  "You’re my favorite person 💌"
-];
-
-bgMusic.volume = 0.7;
-
-musicBtn.addEventListener('click', () => {
-  if (bgMusic.paused) {
-    bgMusic.play().catch(()=>{});
-    musicBtn.textContent = "🔊";
-  } else {
-    bgMusic.pause();
-    musicBtn.textContent = "🎵";
-  }
-});
-
-document.body.addEventListener('pointerdown', () => {
-  if (!musicStarted) {
-    bgMusic.play().catch(()=>{});
-    musicStarted = true;
-  }
-}, { once: true });
-
-yesBtn.addEventListener('click', () => {
-  popup.style.display = 'flex';
-  spawnGif();
-});
-
-function dodgeNo() {
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-  noBtn.style.position = 'absolute';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-}
-noBtn.addEventListener('mouseenter', dodgeNo);
-noBtn.addEventListener('touchstart', dodgeNo);
-
-setInterval(() => {
-  const balloon = document.createElement('div');
-  balloon.className = 'balloon';
-  balloon.textContent = '💙';
-  balloon.style.left = Math.random() * 100 + 'vw';
-  balloon.style.fontSize = '32px';
-  balloon.style.animationDuration = '7s';
-  document.body.appendChild(balloon);
-
-  balloon.addEventListener('click', () => {
-    score++;
-    scoreDisplay.textContent = 'Score: ' + score;
-    showMessage();
-    balloon.remove();
+function showRoom(index) {
+  rooms.forEach((room, i) => {
+    room.classList.toggle('active', i === index);
+    buttons[i].classList.toggle('active', i === index);
   });
-
-  setTimeout(() => balloon.remove(), 8000);
-}, 1400);
-
-function showMessage() {
-  loveMsg.textContent = messages[Math.floor(Math.random() * messages.length)];
-  loveMsg.style.opacity = 1;
-  setTimeout(() => loveMsg.style.opacity = 0, 2000);
-}
-
-function spawnGif() {
-  const gif = document.createElement('img');
-  gif.src = "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif";
-  gif.className = "floating-gif";
-  gif.style.left = Math.random() * 80 + 'vw';
-  document.body.appendChild(gif);
-  setTimeout(() => gif.remove(), 10000);
 }
 </script>
 
